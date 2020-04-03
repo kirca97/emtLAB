@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <div th:text="${product.getId()}"></div>
+    <div th:text="${product.getName()}"></div>
+    <div th:text="${product.getDescription()}"></div>
+    <img th:src="${product.getLink()}" style="width: 100px;height: 100px"></img>
+    <span>Category: </span>
+    <span th:text="${product.getCategory().getName()}"></span>
+    <span>Manufacturer: </span>
+    <span th:text="${product.getManufacturer().getName()}"></span>
+</div>
+<form action='/charge' method='POST' id='checkout-form'>
+    <input type='hidden' th:value="${product.getId()}" name="productId"/>
+    <input type='hidden' th:value='${amount}' name='amount'/>
+    <label>Price:<span th:text='${product.getPrice()}'></span> EUR</label>
+    <!-- NOTE: data-key/data-amount/data-currency will be rendered by Thymeleaf -->
+    <script
+            src='https://checkout.stripe.com/checkout.js'
+            class='stripe-button'
+            th:attr='data-key=${stripePublicKey},
+            data-amount=${amount},
+            data-currency=${currency},
+            data-productId=${product.getId()}'
+            data-name='Shop'
+            data-description='Test checkout'
+            data-image
+                    ='http://www.baeldung.com/wp-content/themes/baeldung/favicon/android-chrome-192x192.png'
+            data-locale='auto'
+            data-zip-code='false'>
+    </script>
+</form>
+
+
+</body>
+</html>
